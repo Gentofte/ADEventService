@@ -1,0 +1,27 @@
+﻿
+Fejlhåndtering af workere som er afhængige af eksterne ressourcer (fx AD, RabbitMQ, osv.) refaktoriseres måske?? ud af workeren selv ... Check fx AD håntdering af ChangeNotifierWorker
+
+Wihima tilføjes funktionalitet - hvor display strøm kan pauses i brugergrænsefladen
+Wihima tilføjes funktionalitet - hvor display indhold kan selectes som mønster og dernæst tilknyttes display farve, der bruges ved visning fremover
+
+Dynmisk load og aktivering af abonnementer
+
+Opsamling af stats på abonnementer
+Bruger, OU, gruppe filtrereuings angivelser fra klient side
+
+Flush fra klient
+
+Import/eksport af abonnements defintioner
+
+Indbygget API hjælp og web GUI i service. AFVENTER SELFHOSTED (IIS uafhængig) MVC fra MS
+Muligvvis indbygget admin website. AFVENTER SELFHOSTED (IIS uafhængig) MVC fra MS
+
+API for tænd, sluk af service, stats og ...
+
+Koncept for skriv af gældende konfig indstillinger ved service start (med rapport fra services selv) og ved service ændringer ... fx registrereing, rekonfig, start, stop af abonementer, osv.
+
+Ved oprettelse af NY bruger med kodeord der IKKE opfylder givne AD regler, oprettes user objektet faktisk i AD, men slettes IGEN med det samme.
+Overvej tilpasning som undgår opret/slet "flutter" og kun opretter evt, når rigtigt objekt oprettes.
+
+Ved sletning af objekt, kan der forekomme flere notifikationer fra AD. Igen - undertryk "flutter"
+

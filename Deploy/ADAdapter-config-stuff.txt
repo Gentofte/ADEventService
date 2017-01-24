@@ -1,0 +1,11 @@
+    <Subscription>
+      <ID>776E16BD-895E-45E1-A2A3-EB0AED176EB0</ID>
+      <Name>AdapterXXX</Name>
+      <Description>Test adapter</Description>
+      <Endpoint>http://localhost:8810/api/v1/notifications</Endpoint>
+      <ContactEmail />
+      <Approved>true</Approved>
+      <Enabled>true</Enabled>
+      <PublishON>true</PublishON>
+      <Version>1a48073a-f99e-4116-827c-3e40cf9aa1da</Version>
+    </Subscription>
