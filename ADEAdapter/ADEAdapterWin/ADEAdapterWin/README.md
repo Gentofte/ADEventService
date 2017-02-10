@@ -55,10 +55,6 @@ To sum up, the following prerequisites is needed to run ADEventServices:
 1. RabbitMQ - (download from [https://www.rabbitmq.com/](https://www.rabbitmq.com/ "https://www.rabbitmq.com/")) 
 1. Redis for windows (download from [https://github.com/MSOpenTech/redis/releases](https://github.com/MSOpenTech/redis/releases "https://github.com/MSOpenTech/redis/releases"))
 
-### Development of adapters
-
-For a rather rough introduction of building ADESVC adapters, check out the document Short-intro-to-adapter-dev.docx located in the Docs folder.
-
 ### License
 
 ADEventService is licensed under GPLv3 license terms

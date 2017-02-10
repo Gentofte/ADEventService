@@ -2,11 +2,11 @@
 
 ### What is it?
 
-Well, ADEventService is basically a Windows service (a collection of services) witch makes it possible for 3. party applications to be notified whenever a change occur i Active Directory. A change, ie. a creation or deletion of a user, modifying a users cell phone number, adding membership to a security group, etc. That's it - no more.
+ADEventService is basically a Windows service (a collection of services) witch makes it possible for 3. party applications to be notified whenever a change occur i Active Directory. A change may be a creation or deletion of a user, modifying a users cell phone number, adding membership to a security group, etc. That's it!
 
 Well, not quite. Actually ADEventService was constructed to be the central hub for notifying anything of changes in AD ie. making it a important part of a AD centric IDM koncept. It does that by:
 
-- provide ***reliable*** provisionering of AD objects such as users, groups, etc., with the use of EDA/push arcitecture pattern
+- provide ***reliable*** provisionering of AD objects such as users, groups, organizational units, etc., using a nice EDA/push arcitecture pattern
 - allow multiple subscribes to subscribe to events though easy configuration tools
 - make integration of 3. party subscribers easy.
 
