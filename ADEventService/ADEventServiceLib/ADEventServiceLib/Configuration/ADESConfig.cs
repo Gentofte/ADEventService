@@ -37,6 +37,8 @@ namespace ADEventService.Configuration
         readonly bool _logNULLNotifications = false;
         readonly bool _logRawEventsReceived =false;
         readonly bool _logEventsTransmitted = false;
+        readonly bool _enableADxSampleSubscription = false;
+        readonly bool _enableCacheLocks = false;
 
         const string _configStoreDataFolderName = "Config";
 
@@ -95,6 +97,12 @@ namespace ADEventService.Configuration
             catch { }
 
             try { _logEventsTransmitted = _appConfig.GetAppSettingBool("LogEventsTransmitted"); }
+            catch { }
+
+            try { _enableADxSampleSubscription = _appConfig.GetAppSettingBool("EnableADxSampleSubscription"); }
+            catch { }
+
+            try { _enableCacheLocks = _appConfig.GetAppSettingBool("EnableCacheLocks"); }
             catch { }
 
             _appPrefix = (ApplicationPrefix.Length > 0) ? ApplicationPrefix : _appPrefix;
@@ -158,6 +166,12 @@ namespace ADEventService.Configuration
 
         // -----------------------------------------------------------------------------
         public bool LogEventsTransmitted { get { return _logEventsTransmitted; } }
+
+        // -----------------------------------------------------------------------------
+        public bool EnableADxSampleSubscription { get { return _enableADxSampleSubscription; } }
+
+        // -----------------------------------------------------------------------------
+        public bool EnableCacheLocks { get { return _enableCacheLocks; } }
 
         // -----------------------------------------------------------------------------
         public Guid ApplicationID { get { return _runtimeInfo.ApplicationID; } }

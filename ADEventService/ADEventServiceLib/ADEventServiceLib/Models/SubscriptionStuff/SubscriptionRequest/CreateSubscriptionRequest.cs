@@ -1,8 +1,12 @@
-﻿namespace ADEventService.Models
+﻿using System;   
+namespace ADEventService.Models
 {
     // ================================================================================
     public class CreateSubscriptionRequest : ICreateSubscriptionRequest
     {
+        // -----------------------------------------------------------------------------
+        public Guid ID { get; set; }
+
         // -----------------------------------------------------------------------------
         public string Name { get; set; }
 

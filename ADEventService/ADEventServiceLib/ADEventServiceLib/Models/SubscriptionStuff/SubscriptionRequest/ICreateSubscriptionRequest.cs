@@ -10,6 +10,8 @@ namespace ADEventService.Models
     public interface ICreateSubscriptionRequest
     {
         // -----------------------------------------------------------------------------
+        Guid ID { get; set; }
+        // -----------------------------------------------------------------------------
         string Name { get; set; }
         // -----------------------------------------------------------------------------
         string Description { get; set; }

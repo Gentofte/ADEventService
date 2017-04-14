@@ -13,7 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADEventSatellite.DTO", "..\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9B4C3ED8-18CF-4FF3-B5EB-05D045AF9A7B}"
 	ProjectSection(SolutionItems) = preProject
+		..\Shared\AssemblyInfoShared.cs = ..\Shared\AssemblyInfoShared.cs
+		..\..\LICENSE = ..\..\LICENSE
 		..\..\README.md = ..\..\README.md
+		..\Shared\SettingsShared.config = ..\Shared\SettingsShared.config
 	EndProjectSection
 EndProject
 Global

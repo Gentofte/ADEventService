@@ -63,7 +63,7 @@ namespace ADEventService.Workers
 
                 if (adObj != null)
                 {
-                    // Publish rawevent to filter event queue. Knowledge of satelite is not passed along
+                    // Publish rawevent to filter event queue. Knowledge of satellite is not passed along
                     _publisher.PublishMessage(rawEvent);
                 }
             }

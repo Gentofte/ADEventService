@@ -38,11 +38,17 @@ namespace ADEventService.Configuration
             ConfigureIoC_SubscriptionStuff(container);
 
             // Register queue publishers
+
+            // The IRawEventQueuePublisher is used to store raw incomming messages from ADEventSatellite services.
+            // Events is pushed to the raw event queue in the RawEventController class (http://.../api/v1/rawevent).
+            // Later on, in the RawEventQueueMessageHandler class, messages is pulled from the front of the queue and processed. This ...
             container.RegisterType<IRawEventQueuePublisher, RawEventQueuePublisher>(new ContainerControlledLifetimeManager());
+
+            // ... processing consists of unpacking/extracting the AD event from the message itself and if any attributes in the object has changed,
+            // push the event/object to the filtered event queue (IFilteredEventQueue).
             container.RegisterType<IFilteredEventQueuePublisher, FilteredEventQueuePublisher>(new ContainerControlledLifetimeManager());
 
-
-            // Register worker threads ...
+                        // Register worker threads ...
             container.RegisterType<IWorker, HousemateWorker>("HousemateWorker");
 
             ConfigureIoC_RawEventWorker(container);

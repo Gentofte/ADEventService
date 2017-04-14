@@ -43,58 +43,69 @@ namespace ADEventService.Models
         }
 
         // -----------------------------------------------------------------------------
-        public IADObject FilterObject(IADObject adObj, DateTime changeTS)
+        public GK.AD.IADObject FilterObject(GK.AD.IADObject adObj, DateTime changeTS)
         {
-            if (IncludeInCacheHandling(adObj) == false)
-                return adObj;
+            if (adObj == null) return adObj;
+
+            // Never filter out groups ...
+            if (adObj.objectClass == ObjectClass.group) return adObj;
 
             var key = adObj.objectGuid;
-
-            bool found = false;
-            bool equal = false;
-            bool cacheUpdated = false;
 
             byte[] newObj = Serializer.SerializeToByteArray(adObj);
 
             CacheItem newCacheItem = new CacheItem() { Value = newObj, ChangeTS = changeTS };
             byte[] newCacheItemAsBytes = Serializer.SerializeToByteArray(newCacheItem);
 
-            lock (_lock)
+            var oldCachedItemAsBytes = new byte[0];
+            CacheItem oldCachedItem = null;
+
+            if (_config.EnableCacheLocks)
             {
-                // Check if object already exists in cache
-                byte[] oldCacheItemAsBytes;
-                CacheItem oldCacheItem = null;
-
-                oldCacheItemAsBytes = _cache.GetBlob(key);
-
-                // If not found ...
-                if (!found)
+                lock (_lock)
                 {
-                    // ... write object to cache
+                    oldCachedItemAsBytes = _cache.GetBlob(key);
                     _cache.SetBlob(key, newCacheItemAsBytes);
-                    cacheUpdated = true;
-                }
-                else
-                {
-                    // ... otherwise, evaluate if new and old objects is equal
-                    oldCacheItem = Serializer.DeSerializeFromByteArray<CacheItem>(oldCacheItemAsBytes);
-                    equal = Serializer.IsEqual(newObj, oldCacheItem.Value);
 
-                    // If object in cache and new object is different AND new object is newer than the one in cache ...
-                    if (!equal && (newCacheItem.ChangeTS > oldCacheItem.ChangeTS))
+                    // If object isn't found in cache, it's already saved in cache, so just return object (should be handled further down the line)
+                    if (oldCachedItemAsBytes.Length == 0) return adObj;
+
+                    oldCachedItem = Serializer.DeSerializeFromByteArray<CacheItem>(oldCachedItemAsBytes);
+                    if (!(oldCachedItem.ChangeTS < newCacheItem.ChangeTS))
                     {
-                        _cache.SetBlob(key, newCacheItemAsBytes);
-                        cacheUpdated = true;
+                        // Restore previous (old) cache item
+                        _cache.SetBlob(key, oldCachedItemAsBytes);
+                        _config.Logger.LogWARNING(string.Format("Timestamp of new object [{0}] is OLDER than timestamp of cached object [{1}]", newCacheItem.ChangeTS, oldCachedItem.ChangeTS));
                     }
+                }
+            }
+            else
+            {
+                oldCachedItemAsBytes = _cache.GetBlob(key);
+                _cache.SetBlob(key, newCacheItemAsBytes);
 
-                    // ... otherwise, do nothing
+                // If object isn't found in cache, it's already saved in cache, so just return object (should be handled further down the line)
+                if (oldCachedItemAsBytes.Length == 0) return adObj;
+
+                oldCachedItem = Serializer.DeSerializeFromByteArray<CacheItem>(oldCachedItemAsBytes);
+                if (!(oldCachedItem.ChangeTS < newCacheItem.ChangeTS))
+                {
+                    // Restore previous (old) cache item
+                    _cache.SetBlob(key, oldCachedItemAsBytes);
+                    _config.Logger.LogWARNING(string.Format("Timestamp of new object [{0}] is OLDER than timestamp of cached object [{1}]", newCacheItem.ChangeTS, oldCachedItem.ChangeTS));
                 }
             }
 
-            if (!cacheUpdated) LogCacheHits(adObj);
+            // Otherwise, object was found in cache. If new object and existing object has the same value,
+            // return null to indicate cache hit ie. stop further processing
+            if (Serializer.IsEqual(newObj, oldCachedItem.Value))
+            {
+                LogCacheHits(adObj);
+                return null;
+            }
 
-            // Return new object or NULL iff the object was found with perfect macth in the cache
-            return cacheUpdated ? adObj : null;
+            // Objects are different ==> update cache and return object for further processing
+            return adObj;
         }
 
         // -----------------------------------------------------------------------------

@@ -37,9 +37,16 @@ namespace ADEventService.Models
         }
 
         // -----------------------------------------------------------------------------
+        public ICreateSubscriptionRequest CreateSubscriptionRequest(Guid id, string name, string description, string endpoint, string contactEmail)
+        {
+            return new CreateSubscriptionRequest() { ID = id, Name = name, Description = description, Endpoint = endpoint, ContactEmail = contactEmail };
+        }
+
+        // -----------------------------------------------------------------------------
         public ISubscription CreateSubscription(ICreateSubscriptionRequest createSubscriptionRequest)
         {
-            var key = Guid.NewGuid();
+            //var key = Guid.NewGuid();
+            var key = (createSubscriptionRequest.ID == Guid.Empty) ? Guid.NewGuid() : createSubscriptionRequest.ID;
 
             var sub = new Subscription()
             {
@@ -68,6 +75,19 @@ namespace ADEventService.Models
         }
 
         // -----------------------------------------------------------------------------
+        public ISubscription TryGet(Guid id)
+        {
+            try
+            {
+                return Get(id);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        // -----------------------------------------------------------------------------
         public void Update(ISubscription clientSub)
         {
             var sub = Get(clientSub.ID);
@@ -76,6 +96,10 @@ namespace ADEventService.Models
             sub.Description = clientSub.Description;
             sub.Endpoint = clientSub.Endpoint;
             sub.ContactEmail = clientSub.ContactEmail;
+
+            sub.Approved = clientSub.Approved;
+            sub.Enabled = clientSub.Enabled;
+            sub.PublishON = clientSub.PublishON;
 
             // Other subcription values is left unmodifed
 
@@ -151,20 +175,6 @@ namespace ADEventService.Models
                 initLP.Description = initLP.Description;
                 Add(initLP);
 
-                //var initLP2 = CreateLoopbackSubscription();
-                //initLP2.ID = Guid.NewGuid();
-                //initLP2.Name = initLP.Name + "02";
-                //initLP2.Description = initLP.Description + "02";
-                //initLP2.Version = Guid.NewGuid();
-                //Add(initLP2);
-
-                //var initLP3 = CreateLoopbackSubscription();
-                //initLP3.ID = Guid.NewGuid();
-                //initLP3.Name = initLP.Name + "03";
-                //initLP3.Description = initLP.Description + "03";
-                //initLP3.Version = Guid.NewGuid();
-                //Add(initLP3);
-
                 Load(_config.SubscriptionsConfigFilename);
             }
             catch (Exception)
@@ -172,17 +182,6 @@ namespace ADEventService.Models
                 throw;
             }
         }
-
-        // -----------------------------------------------------------------------------
-        //void LoadSubscriptions()
-        //{
-        //    if (_config.ConfigStore.Exists(_subscriptionCollectionStoreKey) == false)
-        //    {
-        //        Checkpoint();
-        //    }
-
-        //    _subscriptions = GK.AppCore.Utility.Serializer.DeSerializeFromByteArray<Dictionary<Guid, ISubscription>>(_config.ConfigStore.GetBlob(_subscriptionCollectionStoreKey));
-        //}
 
         // -----------------------------------------------------------------------------
         void Add(ISubscription sub)

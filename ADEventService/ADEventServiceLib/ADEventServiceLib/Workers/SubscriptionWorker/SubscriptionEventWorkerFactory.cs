@@ -32,7 +32,7 @@ namespace ADEventService.Workers
             queueNameSubscriberPart = queueNameSubscriberPart.TrimEnd("_".ToCharArray());
             queueNameSubscriberPart = queueNameSubscriberPart + "-" + subscription.ID;
 
-            string queueName = string.Format("ADE-publisher-queue-s4-{0}", queueNameSubscriberPart);
+            string queueName = string.Format("{0}-publisher-queue-s4-{1}", _config.ApplicationPrefix.ToUpperInvariant(), queueNameSubscriberPart);
 
             var handler = _handlerFactory.CreateSubscriptionEventMessageHandler(subscription);
             var queueWorker = _queueFactory.CreateQueueWorker(_config.FilteredEventExchange, queueName, true, handler);

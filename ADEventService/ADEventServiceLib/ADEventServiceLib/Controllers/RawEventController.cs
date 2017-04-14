@@ -63,7 +63,7 @@ namespace ADEventService.Controllers
                     throw _exceptionHelper.CreateHttpResponseException(HttpStatusCode.ServiceUnavailable, s);
                 }
 
-                byte[] message = GK.AppCore.Utility.Serializer.SerializeToByteArray(eventPackage);
+                byte[] message = Serializer.SerializeToByteArray(eventPackage);
 
                 // Persist raw event ...
                 _raweventQueue.PublishMessage(message);

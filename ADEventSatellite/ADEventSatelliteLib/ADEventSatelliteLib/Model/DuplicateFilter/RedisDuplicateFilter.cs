@@ -1,7 +1,8 @@
-﻿using ADEventSatellite.Configuration;
-using GK.AD;
+﻿using GK.AD;
 using GK.AppCore.Configuration;
 using GK.AppCore.Utility;
+
+using ADEventSatellite.Configuration;
 
 namespace ADEventSatellite.Model
 {
@@ -35,46 +36,49 @@ namespace ADEventSatellite.Model
         {
             if (adObj == null) return adObj;
 
+            // Never filter out groups ...
             if (adObj.objectClass == ObjectClass.group) return adObj;
 
             var key = adObj.objectGuid;
+            byte[] newItemAsBytes = Serializer.SerializeToByteArray(adObj);
 
-            bool equal = false;
-            bool cacheUpdated = false;
+            var oldCachedItemAsBytes = new byte[0];
 
-            byte[] newObj = GK.AppCore.Utility.Serializer.SerializeToByteArray<IADObject>(adObj);
-
-            lock (_lock)
+            if (_config.EnableCacheLocks)
             {
-                var oldCacheItemAsBytes = _cache.GetBlob(key);
-
-                // If not found ...
-                if (!(oldCacheItemAsBytes.Length > 0))
+                lock (_lock)
                 {
-                    // ... write object to cache
-                    _cache.SetBlob(key, newObj);
-                    cacheUpdated = true;
-                }
-                else
-                {
-                    // ... otherwise, evaluate if new and old objects is equal
-                    equal = GK.AppCore.Utility.Serializer.IsEqual(newObj, oldCacheItemAsBytes);
+                    oldCachedItemAsBytes = _cache.GetBlob(key);
 
-                    // If object in cache and new object is different ...
-                    if (!equal)
-                    {
-                        _cache.SetBlob(key, newObj);
-                        cacheUpdated = true;
-                    }
+                    // Save the new object in cache - it makes no difference, if the same (by value) object is there already,
+                    // except for a minimal waste of clockcycles...  
 
-                    // ... otherwise, do nothing
+                    _cache.SetBlob(key, newItemAsBytes);
                 }
             }
+            else
+            {
+                oldCachedItemAsBytes = _cache.GetBlob(key);
 
-            if (!cacheUpdated) LogCacheHits(adObj);
+                // Save the new object in cache - it makes no difference, if the same (by value) object is there already,
+                // except for a minimal waste of clockcycles...  
 
-            // Return new object or NULL iff the object was found with perfect macth in the cache
-            return cacheUpdated ? adObj : null;
+                _cache.SetBlob(key, newItemAsBytes);
+            }
+
+            // If object isn't found in cache, then save it in cache and return object (object should be handled further down the line)
+            if (oldCachedItemAsBytes.Length == 0) return adObj;
+
+            // Otherwise, object was found in cache. If new object and existing object has the same value,
+            // return null to indicate cache hit ie. stop further processing
+            if (Serializer.IsEqual(newItemAsBytes, oldCachedItemAsBytes))
+            {
+                LogCacheHits(adObj);
+                return null;
+            }
+
+            // Objects are different ==> update cache and return object for further processing
+            return adObj;
         }
 
         // -----------------------------------------------------------------------------

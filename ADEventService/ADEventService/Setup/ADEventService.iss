@@ -40,6 +40,7 @@ Source: {#TargetDir}\*.dll; DestDir: "{app}"; Flags: ignoreversion
 
 Source: {#TargetDir}\LICENSE; DestDir: "{app}"; Flags: ignoreversion
 Source: {#TargetDir}\README.md; DestDir: "{app}"; Flags: ignoreversion
+Source: {#TargetDir}\SettingsShared.config; DestDir: "{app}"; Flags: ignoreversion
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Parameters: "--install"

@@ -19,7 +19,8 @@ namespace ADEventService.Models
 
             ID = Guid.NewGuid();
 
-            Name = string.Format("{0}-NULL", _config.ApplicationPrefix.ToUpperInvariant());
+            //Name = string.Format("{0}-NULL", _config.ApplicationPrefix.ToUpperInvariant());
+            Name = string.Format("NULL");
             Description = "ADEventService NULL subscription. Used internally by ADEventService";
 
             Endpoint = string.Format("{0}/{1}", _config.ServiceBaseURL, NotificationsController.RoutePrefix);

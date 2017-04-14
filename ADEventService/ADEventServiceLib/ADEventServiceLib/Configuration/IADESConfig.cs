@@ -55,6 +55,12 @@ namespace ADEventService.Configuration
         bool LogEventsTransmitted { get; }
 
         // -----------------------------------------------------------------------------
+        bool EnableADxSampleSubscription { get; }
+
+        // -----------------------------------------------------------------------------
+        bool EnableCacheLocks { get; }
+
+        // -----------------------------------------------------------------------------
         Guid ApplicationID { get; }
         // -----------------------------------------------------------------------------
         string ApplicationPrefix { get; }

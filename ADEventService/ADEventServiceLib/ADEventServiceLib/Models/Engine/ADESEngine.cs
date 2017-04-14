@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 using Microsoft.Practices.Unity;
 
@@ -40,6 +41,7 @@ namespace ADEventService.Models
         // -----------------------------------------------------------------------------
         public void InitEngine()
         {
+            PrimeADxSubscription();
         }
 
         // -----------------------------------------------------------------------------
@@ -47,6 +49,41 @@ namespace ADEventService.Models
         {
             if (_workerCollection.IsRunning) return;
             _StartEngine();
+        }
+
+        // -----------------------------------------------------------------------------
+        void PrimeADxSubscription()
+        {
+            Guid ADxApplID = new Guid("18BEAC30-8FE5-437C-8D79-404692AB48D1");
+
+            var ADxSub = _subscriptionRepo.TryGet(ADxApplID);
+
+            if (ADxSub == null)
+            {
+                var subReq = _subscriptionRepo.CreateSubscriptionRequest
+                    (
+                    ADxApplID,
+                    "ADxSAW-01",
+                    "Sample ADx adapter to subscription. Disable or delete subscription if you do not running the ADx sample.",
+                    string.Format("{0}/{1}", "http://localhost:8810", "api/v1/notifications"),
+                    ""
+                    );
+
+                ADxSub = _subscriptionRepo.CreateSubscription(subReq);
+
+                ADxSub.Approved = true;
+                ADxSub.PublishON = true;
+
+                _subscriptionRepo.Update(ADxSub);
+            }
+
+            Debug.Assert(ADxSub != null);
+
+            if (ADxSub.Enabled != _config.EnableADxSampleSubscription)
+            {
+                ADxSub.Enabled = _config.EnableADxSampleSubscription;
+                _subscriptionRepo.Update(ADxSub);
+            }
         }
 
         // -----------------------------------------------------------------------------
