@@ -35,6 +35,7 @@ namespace ADEventSatellite.Configuration
         readonly bool _logCacheHits = false;
         readonly bool _enableCacheLocks = false;
         readonly bool _dropADEEvents = false;
+        readonly bool _logBeforeCache = false;
 
         readonly bool _logEventsTransmitted = false;
 
@@ -83,6 +84,8 @@ namespace ADEventSatellite.Configuration
             try { _enableCacheLocks = _appConfig.GetAppSettingBool("EnableCacheLocks"); }
             catch { }
             try { _dropADEEvents = _appConfig.GetAppSettingBool("DropADEEvents"); }
+            catch { }
+            try { _logBeforeCache = _appConfig.GetAppSettingBool("LogBeforeCache"); }
             catch { }
 
             try { _logEventsTransmitted = _appConfig.GetAppSettingBool("LogEventsTransmitted"); }
@@ -144,6 +147,9 @@ namespace ADEventSatellite.Configuration
 
         // -----------------------------------------------------------------------------
         public bool DropADEEvents { get { return _dropADEEvents; } }
+
+        // -----------------------------------------------------------------------------
+        public bool LogBeforeCache { get { return _logBeforeCache; } }
 
         // -----------------------------------------------------------------------------
         public bool LogEventsTransmitted { get { return _logEventsTransmitted; } }

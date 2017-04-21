@@ -28,27 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.rtbLog = new ADxSimpleAdapterWin.Forms.SafeRTF();
             this.btnClear = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rtbLog = new ADxSimpleAdapterWin.Forms.SafeRTF();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // rtbLog
-            // 
-            this.rtbLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rtbLog.ClearDisplayOnLineCountThreshold = 0;
-            this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbLog.Font = new System.Drawing.Font("Lucida Console", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbLog.Location = new System.Drawing.Point(0, 52);
-            this.rtbLog.Name = "rtbLog";
-            this.rtbLog.ReadOnly = true;
-            this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.rtbLog.Size = new System.Drawing.Size(1349, 494);
-            this.rtbLog.TabIndex = 1;
-            this.rtbLog.Text = "";
-            this.rtbLog.TimePrefixEnabled = false;
-            this.rtbLog.ZeroBasedLineNumbers = false;
             // 
             // btnClear
             // 
@@ -70,6 +54,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1349, 52);
             this.panel1.TabIndex = 0;
+            // 
+            // rtbLog
+            // 
+            this.rtbLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtbLog.ClearDisplayOnLineCountThreshold = 0;
+            this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbLog.Font = new System.Drawing.Font("Lucida Console", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbLog.Location = new System.Drawing.Point(0, 52);
+            this.rtbLog.Name = "rtbLog";
+            this.rtbLog.ReadOnly = true;
+            this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.rtbLog.Size = new System.Drawing.Size(1349, 494);
+            this.rtbLog.TabIndex = 1;
+            this.rtbLog.Text = "";
+            this.rtbLog.TimePrefixEnabled = true;
+            this.rtbLog.ZeroBasedLineNumbers = false;
+            this.rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
             // 
             // AdapterMain
             // 

@@ -7,6 +7,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("1.0.6.*")]
+[assembly: AssemblyVersion("1.1.6.*")]
 
 [assembly: ComVisible(false)]

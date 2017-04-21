@@ -82,6 +82,8 @@ namespace ADEventSatellite.Workers
                 // Filter out any object other than user, OU and group (depending on filter used)
                 adObj = _dropFilter.FilterObject(adObj);
 
+                LogBeforeCache(adObj);
+
                 // Filter out any duplicates ...
                 adObj = _duplicateFilter.FilterObject(adObj);
 
@@ -108,6 +110,13 @@ namespace ADEventSatellite.Workers
                 string objDN = (eventArg == null || eventArg.Result == null || eventArg.Result.DistinguishedName == null) ? "NULL" : eventArg.Result.DistinguishedName;
                 _config.Logger.LogERROR(string.Format("Exception [{3}] occurred inside {0}, DN=>[{1}], Ex=[{2}]. AD CHANGE (notification) is LOST! ", ExeInfo.GetCurrentMethod(true).SmartTruncate(), objDN, ex.Message, ex.GetType().ToString()));
             }
+        }
+
+        // -----------------------------------------------------------------------------
+        void LogBeforeCache(IADObject adObj)
+        {
+            if (adObj != null && _config.LogBeforeCache)
+                _config.Logger.LogINFO(string.Format("AD CHANGE BEFORE CACHE: [{0}]", adObj.ToString()));
         }
 
         // -----------------------------------------------------------------------------

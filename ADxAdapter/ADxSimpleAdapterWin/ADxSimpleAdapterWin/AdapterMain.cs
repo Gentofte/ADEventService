@@ -70,5 +70,14 @@ namespace ADxSimpleAdapterWin
         {
             _config.Logger.ClearLog();
         }
+
+        // -----------------------------------------------------------------------------
+        private void rtbLog_TextChanged(object sender, EventArgs e)
+        {
+            // set the current caret position to the end
+            rtbLog.SelectionStart = rtbLog.Text.Length;
+            // scroll it automatically
+            rtbLog.ScrollToCaret();
+        }
     }
 }
