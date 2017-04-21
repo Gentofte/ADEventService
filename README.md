@@ -8,8 +8,7 @@ Well, is not quite true. ADEventService was built to be the central hub for noti
 
 - provide ***reliable*** provisioning in real time of AD objects such as users, groups, etc., with the use of EDA/push architecture patterns.
 - allow multiple subscribes to subscribe to events though easy configuration settings.
-- make integration of 
--  party subscribers easy. Everything a 3rd party adapter must do, is to expose a simple REST endpoint, accepting POSTs of json formatted AD events.
+- make integration of 3rd party subscribers easy. Everything a 3rd party adapter must do, is to expose a simple REST endpoint, accepting POSTs of json formatted AD events.
 
 ADEventService is described in more detail in this document [ADEventService-intro-v4](https://github.com/Gentofte/ADEventService/blob/master/Docs/ADEventService-intro-v4.pdf "https://github.com/Gentofte/ADEventService/blob/master/Docs/ADEventService-intro-v4.pdf") (currently written in Danish only - sorry for that).
 
