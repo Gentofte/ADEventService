@@ -61,6 +61,9 @@ namespace ADEventService.Configuration
         bool EnableCacheLocks { get; }
 
         // -----------------------------------------------------------------------------
+        bool STSTEST { get; }
+
+        // -----------------------------------------------------------------------------
         Guid ApplicationID { get; }
         // -----------------------------------------------------------------------------
         string ApplicationPrefix { get; }

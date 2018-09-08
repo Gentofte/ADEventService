@@ -39,6 +39,8 @@ namespace ADEventService.Configuration
         readonly bool _logEventsTransmitted = false;
         readonly bool _enableADxSampleSubscription = false;
         readonly bool _enableCacheLocks = false;
+        readonly bool _STSTEST = false;
+
 
         const string _configStoreDataFolderName = "Config";
 
@@ -103,6 +105,9 @@ namespace ADEventService.Configuration
             catch { }
 
             try { _enableCacheLocks = _appConfig.GetAppSettingBool("EnableCacheLocks"); }
+            catch { }
+
+            try { _STSTEST = _appConfig.GetAppSettingBool("STSTEST"); }
             catch { }
 
             _appPrefix = (ApplicationPrefix.Length > 0) ? ApplicationPrefix : _appPrefix;
@@ -172,6 +177,9 @@ namespace ADEventService.Configuration
 
         // -----------------------------------------------------------------------------
         public bool EnableCacheLocks { get { return _enableCacheLocks; } }
+
+        // -----------------------------------------------------------------------------
+        public bool STSTEST { get { return _STSTEST; } }
 
         // -----------------------------------------------------------------------------
         public Guid ApplicationID { get { return _runtimeInfo.ApplicationID; } }

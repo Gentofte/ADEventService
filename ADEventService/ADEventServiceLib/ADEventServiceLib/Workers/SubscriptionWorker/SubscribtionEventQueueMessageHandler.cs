@@ -77,6 +77,11 @@ namespace ADEventService.Workers
                 // Convert event from internal rep. to DTO format ...
                 var dtoEvent = _adEventMapper.CreateADEvent(adEvent);
 
+                if (_config.STSTEST)
+                {
+                    dtoEvent.Sender.What = "STSTEST-01";
+                }
+
                 // ... pack DTO event into JSON  ...
                 var dtoEventAsjson = GK.AD.DTO.Serializer.SerializeToJson(dtoEvent);
 
